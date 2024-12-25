@@ -69,6 +69,30 @@ test('adds 1 + 2 to equal 3', () => {
 });
 EOT
 
+
+# Create a .gitignore file
+cat <<EOT > .gitignore
+# Node.js dependencies
+node_modules/
+
+# Compiled output
+dist/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# System files
+.DS_Store
+Thumbs.db
+
+# TypeScript
+*.tsbuildinfo
+EOT
+
 # Add scripts to package.json
 yarn add --dev rimraf
 node ./script.js
