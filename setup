@@ -1,0 +1,78 @@
+#!/bin/bash
+
+# Initialize the project
+yarn init -y
+
+# Install TypeScript and Babel dependencies
+yarn add --dev typescript @babel/core @babel/cli @babel/preset-env @babel/preset-typescript
+
+# Install Jest and its TypeScript support
+yarn add --dev jest ts-jest @types/jest
+
+# Create a basic tsconfig.json
+cat <<EOT > tsconfig.json
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "outDir": "./dist",
+    "rootDir": "./src"
+  },
+  "include": ["src/**/*.ts"]
+}
+EOT
+
+# Create a basic babel.config.js
+cat <<EOT > babel.config.js
+module.exports = {
+  presets: [
+    '@babel/preset-env',
+    '@babel/preset-typescript'
+  ]
+};
+EOT
+
+# Create a basic Jest configuration
+cat <<EOT > jest.config.js
+module.exports = {
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+  transform: {
+    '^.+\\\\.ts$': 'ts-jest'
+  },
+  moduleFileExtensions: ['ts', 'js'],
+  testMatch: ['**/__tests__/**/*.test.ts']
+};
+EOT
+
+# Create the source and test directories
+mkdir -p src/__tests__
+
+# Create a sample TypeScript file
+cat <<EOT > src/index.ts
+export const sum = (a: number, b: number): number => {
+  return a + b;
+};
+EOT
+
+# Create a sample test file
+cat <<EOT > src/__tests__/index.test.ts
+import { sum } from '../index';
+
+test('adds 1 + 2 to equal 3', () => {
+  expect(sum(1, 2)).toBe(3);
+});
+EOT
+
+# Add scripts to package.json
+yarn add --dev rimraf
+node ./script.js
+
+rm setup
+rm script.js
+echo "Setup complete. Run 'yarn build' to compile, 'yarn type-check' to check types, and 'yarn test' to run tests."
